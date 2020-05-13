@@ -6,17 +6,17 @@ public class MouseManager : MonoBehaviour
     public Transform cameraRig;
     public Transform cameraObj;
 
-    public float movementSpeed;
-    public float movementTime;
-    public float zoomAmount;
-    public float rotateAmount;
+    public float movementSpeed = 0.5f;
+    public float movementTime = 5f; 
+    public float zoomAmount = 100f;
+    public float rotateAmount = 10f;
 
-    public Vector2 limitPanX;
-    public Vector2 limitPanZ;
     public Vector2 limitZoom;
 
+    private Vector2 limitPanX;
+    private Vector2 limitPanZ;
+
     private Vector3 dragStart;
-    private Vector3 dragCurrent;
     private Vector3 rotateStart;
     private Vector3 rotateCurrent;
     private Vector3 zoomVector;
@@ -24,6 +24,10 @@ public class MouseManager : MonoBehaviour
     private void Start()
     {
         zoomVector = new Vector3(0, -zoomAmount, zoomAmount);
+        GameManager map_generator = transform.parent.GetComponentInChildren<GameManager>();
+        Vector2 boundaries = map_generator.map_boundaries();
+        limitPanX = new Vector2(0, boundaries.y);
+        limitPanZ = new Vector2(0, boundaries.x);
     }
 
     void Update()
@@ -52,26 +56,28 @@ public class MouseManager : MonoBehaviour
             zoom += Input.mouseScrollDelta.y * zoomVector;
         }
 
-        //pan
+        // pan
         if (Input.GetMouseButtonDown(1))
         {
-            Plane plane = new Plane(Vector3.up, Vector3.zero);
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            float entry;
-            if (plane.Raycast(ray, out entry))
-            {
-                dragStart = ray.GetPoint(entry);
-            }
+            // remember initial mouse pos
+            dragStart = Input.mousePosition;
         }
         if (Input.GetMouseButton(1))
         {
+            // cast ray to initial mouse pos to get center point
             Plane plane = new Plane(Vector3.up, Vector3.zero);
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(dragStart);
             float entry;
             if (plane.Raycast(ray, out entry))
             {
-                dragCurrent = ray.GetPoint(entry);
-                pos += dragStart - dragCurrent;
+                Vector3 center = ray.GetPoint(entry);
+                // cast second ray to current mouse pos
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (plane.Raycast(ray, out entry))
+                {
+                    // calculate pan vector and scale by speed
+                    pos += (ray.GetPoint(entry) - center) * movementSpeed;
+                }
             }
         }
 
@@ -92,6 +98,7 @@ public class MouseManager : MonoBehaviour
 
         pos = new Vector3(Mathf.Clamp(pos.x, limitPanX.x, limitPanX.y), pos.y,
                           Mathf.Clamp(pos.z, limitPanZ.x, limitPanZ.y));
+
         zoom = new Vector3(zoom.x, Mathf.Clamp(zoom.y, limitZoom.x, limitZoom.y),
                           Mathf.Clamp(zoom.z, -limitZoom.y, -limitZoom.x));
 

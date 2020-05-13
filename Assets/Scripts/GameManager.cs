@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
             for (int x = 0; x < heightmap.width; x++)
             {
                 // get gray value of current pixel as height
-                float height = pixels[y * heightmap.width + x].grayscale; // FIXME assignment says highest RGB but imo grayscale makes more sense...
+                float height = pixels[y * heightmap.width + x].grayscale;
                 // find lowest matching height limit
                 for (int i = 0; i < height_limits.Count; i++)
                 {
@@ -41,11 +41,17 @@ public class GameManager : MonoBehaviour
                         // offset every odd row to align hexes properly
                         float offset = y % 2 == 1 ? odd_row_offset : 0;
                         // instantiate corresponding tile
-                        Instantiate(tile_prefabs[i], new Vector3(y * tile_offset_x, height_multiplier * height, x * tile_offset_z + offset), Quaternion.identity);
+                        GameObject tile = Instantiate(tile_prefabs[i], new Vector3(y * tile_offset_x, height_multiplier * height, x * tile_offset_z + offset), Quaternion.identity);
                         break;
                     }
                 }
             }
         }
+    }
+
+    // accessor for mousemanager limits
+    public Vector2 map_boundaries()
+    {
+        return new Vector2(heightmap.width * tile_offset_z, heightmap.height * tile_offset_x);
     }
 }
