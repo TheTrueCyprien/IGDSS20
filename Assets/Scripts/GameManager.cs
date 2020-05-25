@@ -215,6 +215,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Production cycle for building
+    private IEnumerator production_cycle(Building building)
+    {
+        while (true)
+        {
+            bool active = true;
+            foreach (var resource in building.input_resources)
+            {
+                if (!HasResourceInWarehoues(resource))
+                {
+                    active = false;
+                    break;
+                }
+            }
+            if (active)
+            {
+                yield return new WaitForSeconds(building.cycle_time());
+                _resourcesInWarehouse[building.output_resources] += building.output_count;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+    }
+
     //Checks if there is at least one material for the queried resource type in the warehouse
     public bool HasResourceInWarehoues(ResourceTypes resource)
     {
@@ -247,6 +273,8 @@ public class GameManager : MonoBehaviour
 
                 Instantiate(building_prefab, tile.transform.position, tile.transform.rotation);
                 _buildingInstances[building_script.type] += 1;
+
+                StartCoroutine(production_cycle(building_script));
             }
 
         }

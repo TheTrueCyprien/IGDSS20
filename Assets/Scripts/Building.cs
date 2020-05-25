@@ -19,21 +19,20 @@ public class Building : MonoBehaviour
     public List<Tile.TileTypes> buildable_on;
     public Tile.TileTypes scales_with;
     public Vector2Int neighbour_range;
-    public List<GameManager.ResourceTypes> input_ressources;
-    public GameManager.ResourceTypes output_ressources;
+    public List<GameManager.ResourceTypes> input_resources;
+    public GameManager.ResourceTypes output_resources;
 
     private float efficiency = 1.0f;
-    private float progress = 0.0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public float cycle_time()
     {
-        
+        return 1 / efficiency;
     }
+
 }
