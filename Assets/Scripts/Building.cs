@@ -27,12 +27,18 @@ public class Building : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        int scale_count = 0;
+        foreach (var neighbour in tile._neighborTiles)
+        {
+            if (neighbour._type == scales_with)
+                scale_count += 1;
+        }
+        efficiency = Mathf.Min(Mathf.Max(0.0f, (scale_count - neighbour_range.x - 1.0f) / (neighbour_range.y - neighbour_range.x - 1.0f)), 1.0f);
     }
 
     public float cycle_time()
     {
-        return 1 / efficiency;
+        return efficiency > 0.0f ? 1.0f / efficiency : -1.0f;
     }
 
 }
