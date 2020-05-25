@@ -240,12 +240,14 @@ public class GameManager : MonoBehaviour
             Building building_script = building_prefab.GetComponent<Building>();
 
             if (_resourcesInWarehouse[ResourceTypes.Planks] >= building_script.cost_planks && 
-                _money >= building_script.cost_money)
+                _money >= building_script.cost_money &&
+                building_script.buildable_on.Contains(tile._type))
             {
                 _resourcesInWarehouse[ResourceTypes.Planks] -= building_script.cost_planks;
                 _money -= building_script.cost_money;
 
-                Instantiate(building_prefab, tile.transform.position, tile.transform.rotation);
+                GameObject b = Instantiate(building_prefab, tile.transform.position, tile.transform.rotation);
+                b.GetComponent<Building>().tile = tile;
                 _buildingInstances[building_script.type] += 1;
             }
 
