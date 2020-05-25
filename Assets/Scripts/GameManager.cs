@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
         {
             Assert.IsTrue(height_limits[i - 1] < height_limits[i]);
         }
+        _tileMap = new Tile[heightmap.height, heightmap.width];
         // iterate through each pixel
         Color[] pixels = heightmap.GetPixels();
         for (int y = 0; y < heightmap.height; y++)
@@ -44,10 +45,17 @@ public class GameManager : MonoBehaviour
                         float offset = y % 2 == 1 ? odd_row_offset : 0;
                         // instantiate corresponding tile
                         GameObject tile = Instantiate(tile_prefabs[i], new Vector3(y * tile_offset_x, height_multiplier * height, x * tile_offset_z + offset), Quaternion.identity);
+                        _tileMap[y, x] = tile.GetComponent<Tile>();
                         break;
                     }
                 }
             }
+        }
+        // attach neighbours to each tile
+        foreach (var tile in _tileMap)
+        {
+            List<Tile> neighbours = FindNeighborsOfTile(tile);
+            tile._neighborTiles = neighbours;
         }
     }
 
@@ -202,11 +210,20 @@ public class GameManager : MonoBehaviour
     }
 
     //Returns a list of all neighbors of a given tile
-    private List<Tile> FindNeighborsOfTile(Tile t)
+    private List<Tile> FindNeighborsOfTile(Tile tile)
     {
         List<Tile> result = new List<Tile>();
 
-        //TODO: put all neighbors in the result list
+        Collider[] hit = Physics.OverlapSphere(tile.transform.position, tile_offset_z, LayerMask.GetMask("Tiles"));
+
+        foreach (var t in hit)
+        {
+            Tile neighbour = t.GetComponentInParent<Tile>();
+            if (neighbour != tile)
+            {
+                result.Add(neighbour);
+            }
+        }
 
         return result;
     }
