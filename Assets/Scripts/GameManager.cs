@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -69,6 +70,8 @@ public class GameManager : MonoBehaviour
     #region Buildings
     public GameObject[] _buildingPrefabs; //References to the building prefabs
     public int _selectedBuildingPrefabIndex = 0; //The current index used for choosing a prefab to spawn from the _buildingPrefabs list
+    public int _money;
+    private Dictionary<Building.BuildingType, int> _buildingInstances = new Dictionary<Building.BuildingType, int>();
     #endregion
 
 
@@ -102,6 +105,8 @@ public class GameManager : MonoBehaviour
     {
         generate_terrain();
         PopulateResourceDictionary();
+        PopulateBuildingDictionary();
+        InvokeRepeating("UpdateEconomyTick", 0.0f, 60.0f);
     }
 
     // Update is called once per frame
@@ -124,6 +129,18 @@ public class GameManager : MonoBehaviour
         _resourcesInWarehouse.Add(ResourceTypes.Clothes, 0);
         _resourcesInWarehouse.Add(ResourceTypes.Potato, 0);
         _resourcesInWarehouse.Add(ResourceTypes.Schnapps, 0);
+    }
+
+    void PopulateBuildingDictionary()
+    {
+        _buildingInstances.Add(Building.BuildingType.Base, 0);
+        _buildingInstances.Add(Building.BuildingType.Fishery, 0);
+        _buildingInstances.Add(Building.BuildingType.Lumberjack, 0);
+        _buildingInstances.Add(Building.BuildingType.PotatoFarm, 0);
+        _buildingInstances.Add(Building.BuildingType.Sawmill, 0);
+        _buildingInstances.Add(Building.BuildingType.SchnappsDistillery, 0);
+        _buildingInstances.Add(Building.BuildingType.SheepFarm, 0);
+        _buildingInstances.Add(Building.BuildingType.Weavery, 0);
     }
 
     //Sets the index for the currently selected building prefab by checking key presses on the numbers 1 to 0
@@ -183,6 +200,21 @@ public class GameManager : MonoBehaviour
         _ResourcesInWarehouse_Schnapps = _resourcesInWarehouse[ResourceTypes.Schnapps];
     }
 
+    //Updates the resource upkeep of all buildings 
+    void UpdateEconomyTick()
+    {
+        //constant income
+        _money += 100;
+
+        //upkeep cost
+        foreach (var building_prefab in _buildingPrefabs)
+        {
+            Building.BuildingType type = building_prefab.GetComponent<Building>().type;
+            int upkeep = building_prefab.GetComponent<Building>().upkeep;
+            _money -= _buildingInstances[type] * upkeep;
+        }
+    }
+
     //Checks if there is at least one material for the queried resource type in the warehouse
     public bool HasResourceInWarehoues(ResourceTypes resource)
     {
@@ -199,12 +231,23 @@ public class GameManager : MonoBehaviour
     }
 
     //Checks if the currently selected building type can be placed on the given tile and then instantiates an instance of the prefab
-    private void PlaceBuildingOnTile(Tile t)
+    private void PlaceBuildingOnTile(Tile tile)
     {
         //if there is building prefab for the number input
         if (_selectedBuildingPrefabIndex < _buildingPrefabs.Length)
         {
-            //TODO: check if building can be placed and then istantiate it
+            GameObject building_prefab = _buildingPrefabs[_selectedBuildingPrefabIndex];
+            Building building_script = building_prefab.GetComponent<Building>();
+
+            if (_resourcesInWarehouse[ResourceTypes.Planks] >= building_script.cost_planks && 
+                _money >= building_script.cost_money)
+            {
+                _resourcesInWarehouse[ResourceTypes.Planks] -= building_script.cost_planks;
+                _money -= building_script.cost_money;
+
+                Instantiate(building_prefab, tile.transform.position, tile.transform.rotation);
+                _buildingInstances[building_script.type] += 1;
+            }
 
         }
     }
