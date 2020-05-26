@@ -25,18 +25,21 @@ public class Building : MonoBehaviour
 
     public float cycle_time()
     {
-        return efficiency > 0.0f ? 1.0f / efficiency : -1.0f;
+        return efficiency > 0.0f ? generation_interval / efficiency : -1.0f;
     }
 
     public void init_efficiency(List<Tile> neighbours)
     {
-        int scale_count = 0;
-        foreach (var neighbour in neighbours)
+        if (scales_with != Tile.TileTypes.Empty) 
         {
-            if (neighbour._type == scales_with)
-                scale_count += 1;
+            int scale_count = 0;
+            foreach (var neighbour in neighbours)
+            {
+                if (neighbour._type == scales_with)
+                    scale_count += 1;
+            }
+            efficiency = Mathf.Min(Mathf.Max(0.0f, (scale_count - neighbour_range.x + 1.0f) / (neighbour_range.y - neighbour_range.x + 1.0f)), 1.0f);
         }
-        efficiency = Mathf.Min(Mathf.Max(0.0f, (scale_count - neighbour_range.x + 1.0f) / (neighbour_range.y - neighbour_range.x + 1.0f)), 1.0f);
 
     }
 
