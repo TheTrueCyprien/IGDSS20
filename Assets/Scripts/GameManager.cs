@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
         generate_terrain();
         PopulateResourceDictionary();
         PopulateBuildingDictionary();
-        InvokeRepeating("UpdateEconomyTick", 0.0f, 60.0f);
+        InvokeRepeating("UpdateEconomyTick", 0.0f, 10.0f);
     }
 
     // Update is called once per frame
@@ -272,12 +272,20 @@ public class GameManager : MonoBehaviour
 
             if (_resourcesInWarehouse[ResourceTypes.Planks] >= building_script.cost_planks && 
                 _money >= building_script.cost_money &&
-                building_script.buildable_on.Contains(tile._type))
+                building_script.buildable_on.Contains(tile._type) &&
+                tile._building == null)
             {
                 _resourcesInWarehouse[ResourceTypes.Planks] -= building_script.cost_planks;
                 _money -= building_script.cost_money;
 
-                GameObject b = Instantiate(building_prefab, tile.transform.parent.position, tile.transform.parent.rotation);
+                Transform tile_transform = tile.gameObject.transform;
+                tile._building = building_script;
+                GameObject b = Instantiate(building_prefab, tile_transform.position, tile_transform.rotation);
+                foreach (Transform child in tile_transform)
+                {
+                    child.gameObject.SetActive(false);
+                }
+
                 b.GetComponent<Building>().tile = tile;
                 _buildingInstances[building_script.type] += 1;
 

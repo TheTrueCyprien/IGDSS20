@@ -22,7 +22,7 @@ public class Building : MonoBehaviour
     public List<GameManager.ResourceTypes> input_resources;
     public GameManager.ResourceTypes output_resources;
 
-    private float efficiency = 1.0f;
+    public float efficiency = 1.0f;
 
     // Start is called before the first frame update
     void Start()

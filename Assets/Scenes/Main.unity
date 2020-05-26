@@ -496,7 +496,7 @@ MonoBehaviour:
   _money: 0
   _ResourcesInWarehouse_Fish: 0
   _ResourcesInWarehouse_Wood: 0
-  _ResourcesInWarehouse_Planks: 0
+  _ResourcesInWarehouse_Planks: 2
   _ResourcesInWarehouse_Wool: 0
   _ResourcesInWarehouse_Clothes: 0
   _ResourcesInWarehouse_Potato: 0
