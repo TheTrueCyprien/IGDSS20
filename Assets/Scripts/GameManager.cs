@@ -281,7 +281,8 @@ public class GameManager : MonoBehaviour
                 b.GetComponent<Building>().tile = tile;
                 _buildingInstances[building_script.type] += 1;
 
-                StartCoroutine(production_cycle(building_script));
+                if (building_script.cycle_time() > 0)
+                    StartCoroutine(production_cycle(building_script));
             }
             else
             {
