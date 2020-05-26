@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6889163835241989908}
+  - component: {fileID: 1327653690403276576}
   m_Layer: 0
   m_Name: Sawmill
   m_TagString: Untagged
@@ -55,6 +56,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1327653690403276576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3387063152676450653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7524545b7662fa488124b95cff28454, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 3
+  upkeep: 10
+  cost_money: 100
+  cost_planks: 0
+  tile: {fileID: 0}
+  generation_interval: 15
+  output_count: 2
+  buildable_on: 030000000400000005000000
+  scales_with: 0
+  neighbour_range: {x: 0, y: 0}
+  input_resources: 02000000
+  output_resources: 3
+  efficiency: 1
 --- !u!1001 &580754406715976555
 PrefabInstance:
   m_ObjectHideFlags: 0

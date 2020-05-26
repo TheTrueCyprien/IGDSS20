@@ -492,6 +492,8 @@ MonoBehaviour:
   _buildingPrefabs:
   - {fileID: 7004760968118429706, guid: bda65abb5dc85834b99f806570193669, type: 3}
   - {fileID: 154951036837849201, guid: 649ecb926e1281b419c2d9245c1c3fcc, type: 3}
+  - {fileID: 3387063152676450653, guid: e7d0b6a28ae795442938ff3f8b9b3425, type: 3}
+  - {fileID: 2801723265797443984, guid: 764fdd11ea26056418f18fbc121fb6e4, type: 3}
   _selectedBuildingPrefabIndex: 0
   _money: 0
   _ResourcesInWarehouse_Fish: 0
