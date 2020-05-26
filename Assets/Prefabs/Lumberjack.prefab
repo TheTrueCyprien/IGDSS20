@@ -112,7 +112,8 @@ MonoBehaviour:
   scales_with: 4
   neighbour_range: {x: 1, y: 6}
   input_resources: 
-  output_resources: 0
+  output_resources: 2
+  efficiency: 1
 --- !u!1001 &46317403477455262
 PrefabInstance:
   m_ObjectHideFlags: 0

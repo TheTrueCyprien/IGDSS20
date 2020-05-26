@@ -681,8 +681,9 @@ MonoBehaviour:
   buildable_on: 02000000
   scales_with: 1
   neighbour_range: {x: 1, y: 3}
-  input_ressources: 
-  output_ressources: 1
+  input_resources: 
+  output_resources: 1
+  efficiency: 1
 --- !u!1 &9051789716223481220
 GameObject:
   m_ObjectHideFlags: 0

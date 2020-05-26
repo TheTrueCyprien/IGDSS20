@@ -136,7 +136,6 @@ public class GameManager : MonoBehaviour
 
     void PopulateBuildingDictionary()
     {
-        _buildingInstances.Add(Building.BuildingType.Base, 0);
         _buildingInstances.Add(Building.BuildingType.Fishery, 0);
         _buildingInstances.Add(Building.BuildingType.Lumberjack, 0);
         _buildingInstances.Add(Building.BuildingType.PotatoFarm, 0);
@@ -235,6 +234,10 @@ public class GameManager : MonoBehaviour
             if (active)
             {
                 yield return new WaitForSeconds(building.cycle_time());
+                foreach (var resource in building.input_resources)
+                {
+                    _resourcesInWarehouse[resource] -= 1;
+                }
                 _resourcesInWarehouse[building.output_resources] += building.output_count;
             }
             else
