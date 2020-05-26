@@ -238,11 +238,11 @@ public class GameManager : MonoBehaviour
             }
             if (active)
             {
-                yield return new WaitForSeconds(building.cycle_time());
                 foreach (var resource in building.input_resources)
                 {
                     _resourcesInWarehouse[resource] -= 1;
                 }
+                yield return new WaitForSeconds(building.cycle_time());
                 _resourcesInWarehouse[building.output_resources] += building.output_count;
             }
             else
