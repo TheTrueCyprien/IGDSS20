@@ -46,7 +46,10 @@ public class MouseManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
-                Debug.Log("Clicked on: " + hit.collider.name);
+                GameManager gm = FindObjectOfType<GameManager>();
+                Tile t = hit.collider.gameObject.GetComponentInChildren<Tile>();
+                Debug.Log("Tile type: " + t._type + "\npos: " + t._coordinateWidth + ", " + t._coordinateHeight);
+                gm.TileClicked(t._coordinateHeight, t._coordinateWidth);
             }
         }
 

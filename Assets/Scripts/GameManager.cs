@@ -45,8 +45,11 @@ public class GameManager : MonoBehaviour
                         // offset every odd row to align hexes properly
                         float offset = y % 2 == 1 ? odd_row_offset : 0;
                         // instantiate corresponding tile
-                        GameObject tile = Instantiate(tile_prefabs[i], new Vector3(y * tile_offset_x, height_multiplier * height, x * tile_offset_z + offset), Quaternion.identity);
-                        _tileMap[y, x] = tile.GetComponent<Tile>();
+                        GameObject tile_obj = Instantiate(tile_prefabs[i], new Vector3(y * tile_offset_x, height_multiplier * height, x * tile_offset_z + offset), Quaternion.identity);
+                        Tile tile_scr = tile_obj.GetComponent<Tile>();
+                        _tileMap[y, x] = tile_scr;
+                        tile_scr._coordinateWidth = x;
+                        tile_scr._coordinateHeight = y;
                         break;
                     }
                 }
@@ -265,6 +268,8 @@ public class GameManager : MonoBehaviour
             GameObject building_prefab = _buildingPrefabs[_selectedBuildingPrefabIndex];
             Building building_script = building_prefab.GetComponent<Building>();
 
+            Debug.Log("Trying to place: " + building_script.type);
+
             if (_resourcesInWarehouse[ResourceTypes.Planks] >= building_script.cost_planks && 
                 _money >= building_script.cost_money &&
                 building_script.buildable_on.Contains(tile._type))
@@ -272,11 +277,15 @@ public class GameManager : MonoBehaviour
                 _resourcesInWarehouse[ResourceTypes.Planks] -= building_script.cost_planks;
                 _money -= building_script.cost_money;
 
-                GameObject b = Instantiate(building_prefab, tile.transform.position, tile.transform.rotation);
+                GameObject b = Instantiate(building_prefab, tile.transform.parent.position, tile.transform.parent.rotation);
                 b.GetComponent<Building>().tile = tile;
                 _buildingInstances[building_script.type] += 1;
 
                 StartCoroutine(production_cycle(building_script));
+            }
+            else
+            {
+                Debug.Log("Building can't be placed.");
             }
 
         }

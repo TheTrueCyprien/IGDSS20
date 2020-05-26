@@ -489,6 +489,18 @@ MonoBehaviour:
   tile_offset_z: 10
   odd_row_offset: 5
   height_multiplier: 20
+  _buildingPrefabs:
+  - {fileID: 7004760968118429706, guid: bda65abb5dc85834b99f806570193669, type: 3}
+  - {fileID: 154951036837849201, guid: 649ecb926e1281b419c2d9245c1c3fcc, type: 3}
+  _selectedBuildingPrefabIndex: 0
+  _money: 0
+  _ResourcesInWarehouse_Fish: 0
+  _ResourcesInWarehouse_Wood: 0
+  _ResourcesInWarehouse_Planks: 0
+  _ResourcesInWarehouse_Wool: 0
+  _ResourcesInWarehouse_Clothes: 0
+  _ResourcesInWarehouse_Potato: 0
+  _ResourcesInWarehouse_Schnapps: 0
 --- !u!4 &1768092942
 Transform:
   m_ObjectHideFlags: 0
