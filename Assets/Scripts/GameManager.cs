@@ -297,7 +297,11 @@ public class GameManager : MonoBehaviour
     {
         List<Tile> result = new List<Tile>();
 
-        Collider[] hit = Physics.OverlapSphere(tile.transform.position, tile_offset_z, LayerMask.GetMask("Tiles"));
+        Vector3 tile_pos = tile.transform.position;
+        Vector3 capsule_bottom = new Vector3(tile_pos.x, 0.0f, tile_pos.z);
+        Vector3 capsule_top = new Vector3(tile_pos.x, height_multiplier, tile_pos.z);
+
+        Collider[] hit = Physics.OverlapCapsule(capsule_bottom, capsule_top, tile_offset_z, LayerMask.GetMask("Tiles"));
 
         foreach (var t in hit)
         {
