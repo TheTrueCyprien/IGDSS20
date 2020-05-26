@@ -13,7 +13,6 @@ public class Building : MonoBehaviour
     public int upkeep;
     public int cost_money;
     public int cost_planks;
-    public Tile tile;
     public int generation_interval;
     public int output_count;
     public List<Tile.TileTypes> buildable_on;
@@ -24,21 +23,21 @@ public class Building : MonoBehaviour
 
     public float efficiency = 1.0f;
 
-    // Start is called before the first frame update
-    void Start()
+    public float cycle_time()
+    {
+        return efficiency > 0.0f ? 1.0f / efficiency : -1.0f;
+    }
+
+    public void init_efficiency(List<Tile> neighbours)
     {
         int scale_count = 0;
-        foreach (var neighbour in tile._neighborTiles)
+        foreach (var neighbour in neighbours)
         {
             if (neighbour._type == scales_with)
                 scale_count += 1;
         }
         efficiency = Mathf.Min(Mathf.Max(0.0f, (scale_count - neighbour_range.x + 1.0f) / (neighbour_range.y - neighbour_range.x + 1.0f)), 1.0f);
-    }
 
-    public float cycle_time()
-    {
-        return efficiency > 0.0f ? 1.0f / efficiency : -1.0f;
     }
 
 }

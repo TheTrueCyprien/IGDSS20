@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     #region Map generation
     private Tile[,] _tileMap; //2D array of all spawned tiles
+    private Transform tile_parent;
 
     public List<GameObject> tile_prefabs;
     public List<float> height_limits;
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
                         float offset = y % 2 == 1 ? odd_row_offset : 0;
                         // instantiate corresponding tile
                         GameObject tile_obj = Instantiate(tile_prefabs[i], new Vector3(y * tile_offset_x, height_multiplier * height, x * tile_offset_z + offset), Quaternion.identity);
+                        tile_obj.transform.parent = tile_parent;
                         Tile tile_scr = tile_obj.GetComponent<Tile>();
                         _tileMap[y, x] = tile_scr;
                         tile_scr._coordinateWidth = x;
@@ -75,6 +77,7 @@ public class GameManager : MonoBehaviour
     public int _selectedBuildingPrefabIndex = 0; //The current index used for choosing a prefab to spawn from the _buildingPrefabs list
     public int _money;
     private Dictionary<Building.BuildingType, int> _buildingInstances = new Dictionary<Building.BuildingType, int>();
+    private Transform build_parent;
     #endregion
 
 
@@ -106,6 +109,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        tile_parent = GameObject.Find("Tiles").transform;
+        build_parent = GameObject.Find("Buildings").transform;
         generate_terrain();
         PopulateResourceDictionary();
         PopulateBuildingDictionary();
@@ -283,13 +288,13 @@ public class GameManager : MonoBehaviour
 
                 Transform tile_transform = tile.gameObject.transform;
                 tile._building = building_script;
+                building_script.init_efficiency(tile._neighborTiles);
                 GameObject b = Instantiate(building_prefab, tile_transform.position, tile_transform.rotation);
+                b.transform.parent = build_parent;
                 foreach (Transform child in tile_transform)
                 {
                     child.gameObject.SetActive(false);
                 }
-
-                b.GetComponent<Building>().tile = tile;
                 _buildingInstances[building_script.type] += 1;
 
                 if (building_script.cycle_time() > 0)
