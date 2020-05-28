@@ -20,6 +20,7 @@ public class MouseManager : MonoBehaviour
     private Vector3 rotateStart;
     private Vector3 rotateCurrent;
     private Vector3 zoomVector;
+    private LayerMask tileLayerMask;
 
     private void Start()
     {
@@ -28,6 +29,7 @@ public class MouseManager : MonoBehaviour
         Vector2 boundaries = map_generator.map_boundaries();
         limitPanX = new Vector2(0, boundaries.y);
         limitPanZ = new Vector2(0, boundaries.x);
+        tileLayerMask = LayerMask.GetMask("Tiles");
     }
 
     void Update()
@@ -40,11 +42,9 @@ public class MouseManager : MonoBehaviour
         //select tile
         if (Input.GetMouseButtonDown(0))
         {
-            //only collide on layer 8 (tiles)
-            int layerMask = 1 << 8;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayerMask))
             {
                 GameManager gm = FindObjectOfType<GameManager>();
                 Tile t = hit.collider.gameObject.GetComponentInChildren<Tile>();
@@ -80,6 +80,14 @@ public class MouseManager : MonoBehaviour
                 {
                     // calculate pan vector and scale by speed
                     pos += (ray.GetPoint(entry) - center) * movementSpeed;
+                    
+                    // set y to map elevation
+                    ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayerMask))
+                    {
+                        pos.y = hit.collider.transform.position.y;
+                    }
                 }
             }
         }
