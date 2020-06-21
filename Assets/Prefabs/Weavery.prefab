@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 9046391437272360433}
   m_Layer: 0
   m_Name: Weavery
-  m_TagString: Untagged
+  m_TagString: production
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -329,11 +329,12 @@ MonoBehaviour:
   generation_interval: 30
   output_count: 1
   buildable_on: 030000000400000005000000
+  efficiency: 1
+  _workers: []
   scales_with: 0
   neighbour_range: {x: 0, y: 0}
   input_resources: 04000000
   output_resources: 5
-  efficiency: 1
 --- !u!1001 &188606638513767710
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1833,7 +1833,7 @@ GameObject:
   - component: {fileID: -7531469270282648013}
   m_Layer: 0
   m_Name: Potato Farm
-  m_TagString: Untagged
+  m_TagString: production
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1964,11 +1964,12 @@ MonoBehaviour:
   generation_interval: 30
   output_count: 1
   buildable_on: 03000000
+  efficiency: 1
+  _workers: []
   scales_with: 3
   neighbour_range: {x: 1, y: 4}
   input_resources: 
   output_resources: 6
-  efficiency: 1
 --- !u!1 &3808133809365531644
 GameObject:
   m_ObjectHideFlags: 0

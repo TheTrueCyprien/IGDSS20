@@ -284,7 +284,7 @@ public class GameManager : MonoBehaviour
         if (_selectedBuildingPrefabIndex < _buildingPrefabs.Length)
         {
             GameObject building_prefab = _buildingPrefabs[_selectedBuildingPrefabIndex];
-            ProductionBuilding building_script = building_prefab.GetComponent<ProductionBuilding>(); //FIXME HousingBuilding 
+            Building building_script = building_prefab.GetComponent<Building>();
 
             Debug.Log("Trying to place: " + building_script.type);
 
@@ -298,7 +298,6 @@ public class GameManager : MonoBehaviour
 
                 Transform tile_transform = tile.gameObject.transform;
                 tile._building = building_script;
-                building_script.init_efficiency(tile._neighborTiles);
                 GameObject b = Instantiate(building_prefab, tile_transform.position, tile_transform.rotation);
                 b.transform.parent = build_parent;
                 foreach (Transform child in tile_transform)
@@ -307,8 +306,18 @@ public class GameManager : MonoBehaviour
                 }
                 _buildingInstances[building_script.type] += 1;
 
-                if (building_script.cycle_time() > 0)
-                    StartCoroutine(production_cycle(building_script));
+                if (building_prefab.tag == "production")
+                {
+                    ProductionBuilding prod = building_script as ProductionBuilding;
+                    prod.init_efficiency(tile._neighborTiles);
+                    if (building_script.cycle_time() > 0)
+                        StartCoroutine(production_cycle(prod));
+                }
+                else if (building_prefab.tag == "housing")
+                {
+                    HousingBuilding house = building_script as HousingBuilding;
+                    //TODO
+                }
             }
             else
             {

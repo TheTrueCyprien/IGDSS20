@@ -1768,7 +1768,7 @@ GameObject:
   - component: {fileID: 4350871947769276736}
   m_Layer: 0
   m_Name: Sheep Farm
-  m_TagString: Untagged
+  m_TagString: production
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1940,15 +1940,15 @@ MonoBehaviour:
   upkeep: 20
   cost_money: 100
   cost_planks: 2
-  tile: {fileID: 0}
   generation_interval: 30
   output_count: 1
   buildable_on: 03000000
+  efficiency: 1
+  _workers: []
   scales_with: 3
   neighbour_range: {x: 1, y: 4}
   input_resources: 
   output_resources: 4
-  efficiency: 1
 --- !u!1 &2844289276715950681
 GameObject:
   m_ObjectHideFlags: 0

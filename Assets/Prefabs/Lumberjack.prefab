@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5012787426487699640}
   m_Layer: 0
   m_Name: Lumberjack
-  m_TagString: Untagged
+  m_TagString: production
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,15 +105,15 @@ MonoBehaviour:
   upkeep: 10
   cost_money: 100
   cost_planks: 0
-  tile: {fileID: 0}
   generation_interval: 15
   output_count: 1
   buildable_on: 04000000
+  efficiency: 1
+  _workers: []
   scales_with: 4
   neighbour_range: {x: 1, y: 6}
   input_resources: 
   output_resources: 2
-  efficiency: 1
 --- !u!1001 &46317403477455262
 PrefabInstance:
   m_ObjectHideFlags: 0
