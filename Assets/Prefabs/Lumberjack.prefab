@@ -101,14 +101,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7524545b7662fa488124b95cff28454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   upkeep: 10
   cost_money: 100
   cost_planks: 0
   generation_interval: 15
   output_count: 1
   buildable_on: 04000000
-  efficiency: 1
+  worker_capacity: 5
   _workers: []
   scales_with: 4
   neighbour_range: {x: 1, y: 6}
