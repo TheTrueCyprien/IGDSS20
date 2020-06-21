@@ -7,10 +7,12 @@ public class HousingBuilding : Building
     #region MonoBehavior
     public void Start() {
         //spawn two workers
-        for (int i = 0; i < 2; i++) {
-            spawn_worker();
-        }
+        spawn_worker();
         InvokeRepeating("spawn_worker", 0.0f, cycle_time());
+        foreach (Worker w in _workers)
+        {
+            w.BecomeOfAge();
+        }
     }
     #endregion
 
@@ -25,7 +27,6 @@ public class HousingBuilding : Building
             GameObject worker_obj = Instantiate(worker_prefab, transform.position, transform.rotation);
             Worker w = worker_obj.GetComponent<Worker>();
             WorkerAssignedToBuilding(w);
-            JobManager.instance.RegisterWorker(w);
         }
     }
     #endregion
