@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class HousingBuilding : Building
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int capacity = 10;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public bool can_spawn() {
+        return _workers.Count < capacity;
     }
 }

@@ -6,7 +6,7 @@ public abstract class Building : MonoBehaviour
 {
     public enum BuildingType
     {
-        Fishery, Lumberjack, Sawmill, SheepFarm, Weavery, PotatoFarm, SchnappsDistillery
+        Fishery, Lumberjack, Sawmill, SheepFarm, Weavery, PotatoFarm, SchnappsDistillery, Residence
     }
     public BuildingType type;
     public int upkeep;

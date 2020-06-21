@@ -313,10 +313,14 @@ public class GameManager : MonoBehaviour
                     if (building_script.cycle_time() > 0)
                         StartCoroutine(production_cycle(prod));
                 }
-                else if (building_prefab.tag == "housing")
+                else if (building_prefab.tag == "residence")
                 {
                     HousingBuilding house = building_script as HousingBuilding;
                     //TODO
+                    if (building_script.cycle_time() > 0 && house.can_spawn){
+                        Worker worker = new Worker();
+                        building_script.WorkerAssignedToBuilding(worker);
+                    }
                 }
             }
             else
