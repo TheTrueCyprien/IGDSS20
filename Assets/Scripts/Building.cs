@@ -30,7 +30,7 @@ public abstract class Building : MonoBehaviour
 
     protected float happiness_efficiency()
     {
-        return _workers.Average(w => w._happiness);
+        return _workers.Count > 0 ? _workers.Average(w => w._happiness) : 0.0f;
     }
     
     #region Workers
