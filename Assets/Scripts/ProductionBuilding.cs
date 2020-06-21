@@ -37,6 +37,7 @@ public class ProductionBuilding : Building
 
     protected override void calc_efficiency()
     {
-        efficiency = base_efficiency * happiness_efficiency() * _workers.Count / worker_capacity;
+        Debug.Log(base_efficiency.ToString() + " * (" + happiness_efficiency() + " + " + _workers.Count.ToString() + " / " + worker_capacity.ToString() + ") / 2");
+        efficiency = base_efficiency * (happiness_efficiency() + _workers.Count / worker_capacity) / 2.0f;
     }
 }

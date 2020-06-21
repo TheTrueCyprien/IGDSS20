@@ -262,13 +262,15 @@ public class GameManager : MonoBehaviour
                     break;
                 }
             }
-            if (active && building.cycle_time() > 0)
+            float production_time = building.cycle_time();
+            Debug.Log("Production time: " + production_time.ToString());
+            if (active && production_time > 0)
             {
                 foreach (var resource in building.input_resources)
                 {
                     _resourcesInWarehouse[resource] -= 1;
                 }
-                yield return new WaitForSeconds(building.cycle_time());
+                yield return new WaitForSeconds(production_time);
                 _resourcesInWarehouse[building.output_resources] += building.output_count;
             }
             else
@@ -323,20 +325,22 @@ public class GameManager : MonoBehaviour
                 _money -= building_script.cost_money;
 
                 Transform tile_transform = tile.gameObject.transform;
-                tile._building = building_script;
                 GameObject b = Instantiate(building_prefab, tile_transform.position, tile_transform.rotation);
                 b.transform.parent = build_parent;
                 foreach (Transform child in tile_transform)
                 {
                     child.gameObject.SetActive(false);
                 }
+                building_script = b.GetComponent<Building>();
+                
                 _buildingInstances[building_script.type] += 1;
+                tile._building = building_script;
 
                 if (building_prefab.tag == "production")
                 {
-                    ProductionBuilding prod = building_script as ProductionBuilding;
-                    prod.init_efficiency(tile._neighborTiles);
-                    StartCoroutine(production_cycle(prod));
+                    Debug.Log("Initialize production cycle");
+                    (building_script as ProductionBuilding).init_efficiency(tile._neighborTiles);
+                    StartCoroutine(production_cycle(building_script as ProductionBuilding));
                 }
             }
             else
