@@ -8,6 +8,17 @@ public class ProductionBuilding : Building
     public Vector2Int neighbour_range;
     public List<GameManager.ResourceTypes> input_resources;
     public GameManager.ResourceTypes output_resources;
+    public int jobs_available;
+
+    void Start()
+    {
+        // generate jobs
+        for (int j = 0; j < jobs_available; j++)
+        {
+            Job new_job = new Job(this);
+            JobManager.instance.RegisterJob(new_job);
+        }
+    }
 
     public void init_efficiency(List<Tile> neighbours)
     {
