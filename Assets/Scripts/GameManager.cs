@@ -248,38 +248,6 @@ public class GameManager : MonoBehaviour
         population_count--;
     }
 
-    //Production cycle for building
-    private IEnumerator production_cycle(ProductionBuilding building)
-    {
-        while (true)
-        {
-            bool active = true;
-            foreach (var resource in building.input_resources)
-            {
-                if (!HasResourceInWarehoues(resource))
-                {
-                    active = false;
-                    break;
-                }
-            }
-            float production_time = building.cycle_time();
-            Debug.Log("Production time: " + production_time.ToString());
-            if (active && production_time > 0)
-            {
-                foreach (var resource in building.input_resources)
-                {
-                    _resourcesInWarehouse[resource] -= 1;
-                }
-                yield return new WaitForSeconds(production_time);
-                _resourcesInWarehouse[building.output_resources] += building.output_count;
-            }
-            else
-            {
-                yield return null;
-            }
-        }
-    }
-
     //Checks if there is at least one material for the queried resource type in the warehouse
     public bool HasResourceInWarehoues(ResourceTypes resource)
     {
@@ -294,6 +262,11 @@ public class GameManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void store_resource(ResourceTypes resource, int amount)
+    {
+        _resourcesInWarehouse[resource] += amount;
     }
 
     //Is called by MouseManager when a tile was clicked
@@ -338,9 +311,7 @@ public class GameManager : MonoBehaviour
 
                 if (building_prefab.tag == "production")
                 {
-                    Debug.Log("Initialize production cycle");
                     (building_script as ProductionBuilding).init_efficiency(tile._neighborTiles);
-                    StartCoroutine(production_cycle(building_script as ProductionBuilding));
                 }
             }
             else
