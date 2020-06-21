@@ -22,10 +22,6 @@ public abstract class Building : MonoBehaviour
     {
         return efficiency > 0.0f ? generation_interval / efficiency : -1.0f;
     }
-
-    #region Manager References
-    JobManager _jobManager; //Reference to the JobManager
-    #endregion
     
     #region Workers
     public List<Worker> _workers; //List of all workers associated with this building, either for work or living
