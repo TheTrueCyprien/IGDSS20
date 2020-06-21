@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Worker : MonoBehaviour
 {
-    #region Manager References
-    JobManager _jobManager; //Reference to the JobManager
-    GameManager _gameManager;//Reference to the GameManager
-    #endregion
-
     public bool _employed = false;
     public float _age = 0.0f; // The age of this worker
     public float _happiness = 1.0f; // The happiness of this worker
@@ -39,7 +34,7 @@ public class Worker : MonoBehaviour
             int resources_consumed = 0;
             foreach (var resource in consumables)
             {
-                if (_gameManager.ConsumeResource(resource))
+                if (GameManager.instance.ConsumeResource(resource))
                 {
                     resources_consumed += 1;
                 }
@@ -79,12 +74,12 @@ public class Worker : MonoBehaviour
 
     public void BecomeOfAge()
     {
-        _jobManager.RegisterWorker(this);
+        JobManager.instance.RegisterWorker(this);
     }
 
     private void Retire()
     {
-        _jobManager.RemoveWorker(this);
+        JobManager.instance.RemoveWorker(this);
     }
 
     private void Die()

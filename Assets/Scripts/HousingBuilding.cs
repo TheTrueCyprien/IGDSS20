@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class HousingBuilding : Building
 {
-    public int capacity = 10;
-
+    #region Methods
     public bool can_spawn() {
         return _workers.Count < capacity;
     }
+    #endregion
 }

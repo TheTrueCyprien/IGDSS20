@@ -22,12 +22,13 @@ public abstract class Building : MonoBehaviour
 
     public float cycle_time()
     {
+        calc_efficiency();
         return efficiency > 0.0f ? generation_interval / efficiency : -1.0f;
     }
 
     protected float happiness_efficiency()
     {
-        return 1.0f; // TODO paul
+        return _workers.Average(w => w._happiness);
     }
     
     #region Workers

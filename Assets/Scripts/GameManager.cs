@@ -6,6 +6,20 @@ using UnityEngine.Assertions;
 
 public class GameManager : MonoBehaviour
 {
+    #region MonoBehaviour
+    public static GameManager instance = null;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion
 
     #region Map generation
     private Tile[,] _tileMap; //2D array of all spawned tiles
@@ -317,7 +331,7 @@ public class GameManager : MonoBehaviour
                 {
                     HousingBuilding house = building_script as HousingBuilding;
                     //TODO
-                    if (building_script.cycle_time() > 0 && house.can_spawn){
+                    if (building_script.cycle_time() > 0 && house.can_spawn()){
                         Worker worker = new Worker();
                         building_script.WorkerAssignedToBuilding(worker);
                     }
