@@ -77,6 +77,8 @@ MonoBehaviour:
   buildable_on: 02000000030000000400000005000000
   worker_capacity: 10
   _workers: []
+  worker_prefab: {fileID: 7040251864559556316, guid: b1a7be0c8ac4b5844a8ab1fe1718c838,
+    type: 3}
 --- !u!1001 &163693841553759839
 PrefabInstance:
   m_ObjectHideFlags: 0

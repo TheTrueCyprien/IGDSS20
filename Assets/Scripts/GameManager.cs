@@ -262,7 +262,7 @@ public class GameManager : MonoBehaviour
                     break;
                 }
             }
-            if (active)
+            if (active && building.cycle_time() > 0)
             {
                 foreach (var resource in building.input_resources)
                 {
@@ -336,8 +336,7 @@ public class GameManager : MonoBehaviour
                 {
                     ProductionBuilding prod = building_script as ProductionBuilding;
                     prod.init_efficiency(tile._neighborTiles);
-                    if (building_script.cycle_time() > 0)
-                        StartCoroutine(production_cycle(prod));
+                    StartCoroutine(production_cycle(prod));
                 }
             }
             else
