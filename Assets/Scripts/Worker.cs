@@ -12,12 +12,17 @@ public class Worker : MonoBehaviour
     public List<GameManager.ResourceTypes> consumables = new List<GameManager.ResourceTypes> { GameManager.ResourceTypes.Fish, GameManager.ResourceTypes.Clothes, GameManager.ResourceTypes.Schnapps };
 
     private float _age_clock = 0.0f; // Counter to track 15sec intervals
-    private float _consumption_clock = 0.0f; // Counter to track consumption intervals
+    private Dictionary<GameManager.ResourceTypes, float> _consumption_clock; // Counter to track consumption intervals
 
     // Start is called before the first frame update
     void Start()
     {
         GameManager.instance.increment_population();
+        
+        foreach (var resource in consumables)
+        {
+            _consumption_clock[resource] = 0.0f;
+        }
     }
 
     // Update is called once per frame
@@ -29,20 +34,17 @@ public class Worker : MonoBehaviour
 
     private void Consume()
     {
-        _consumption_clock += Time.deltaTime;
-        if (_consumption_clock >= consumption_period)
+        int resources_consumed = 0;
+        foreach (var resource in consumables)
         {
-            int resources_consumed = 0;
-            foreach (var resource in consumables)
-            {
-                if (GameManager.instance.ConsumeResource(resource))
-                {
-                    resources_consumed += 1;
-                }
+            _consumption_clock[resource] += Time.deltaTime;
+            if (_consumption_clock[resource] >= consumption_period && 
+                GameManager.instance.ConsumeResource(resource)) {
+                resources_consumed += 1;
+                _consumption_clock[resource] %= consumption_period;
             }
-            _happiness = (resources_consumed + (_employed ? 1 : 0)) / (consumables.Count+1);
-            _consumption_clock %= consumption_period;
         }
+        _happiness = (resources_consumed + (_employed ? 1 : 0)) / (consumables.Count+1);
     }
 
     private void Age()
@@ -54,21 +56,21 @@ public class Worker : MonoBehaviour
         {
             _age++;
             _age_clock %= 15;
-        }
 
-        if (_age > 14)
-        {
-            BecomeOfAge();
-        }
+            if (_age == 14)
+            {
+                BecomeOfAge();
+            }
 
-        if (_age > 64)
-        {
-            Retire();
-        }
+            if (_age == 64)
+            {
+                Retire();
+            }
 
-        if (_age > 100)
-        {
-            Die();
+            if (_age == 100)
+            {
+                Die();
+            }
         }
     }
 

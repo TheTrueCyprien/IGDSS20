@@ -11,7 +11,7 @@ public class HousingBuilding : Building
         InvokeRepeating("spawn_worker", 0.0f, cycle_time());
         foreach (Worker w in _workers)
         {
-            w.BecomeOfAge();
+            w._age = 14;
         }
     }
     #endregion
