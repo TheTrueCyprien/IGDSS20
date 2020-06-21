@@ -18,7 +18,8 @@ public class Worker : MonoBehaviour
     void Start()
     {
         GameManager.instance.increment_population();
-        
+
+        _consumption_clock = new Dictionary<GameManager.ResourceTypes, float>();
         foreach (var resource in consumables)
         {
             _consumption_clock[resource] = 0.0f;

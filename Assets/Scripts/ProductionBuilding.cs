@@ -9,6 +9,8 @@ public class ProductionBuilding : Building
     public List<GameManager.ResourceTypes> input_resources;
     public GameManager.ResourceTypes output_resources;
     private float base_efficiency = 1.0f;
+    private bool production_active = false;
+    private float progress = 0.0f;
 
     void Start()
     {
@@ -17,6 +19,41 @@ public class ProductionBuilding : Building
         {
             Job new_job = new Job(this);
             JobManager.instance.RegisterJob(new_job);
+        }
+    }
+
+    private void Update()
+    {
+        if (production_active)
+        {
+            efficiency = base_efficiency * (happiness_efficiency() + _workers.Count / (float)worker_capacity) / 2.0f;
+            progress += efficiency * Time.deltaTime;
+            if (progress >= generation_interval)
+            {
+                GameManager.instance.store_resource(output_resources, output_count);
+                progress = 0;
+                production_active = false;
+            }
+        }
+        else
+        {
+            bool resources_available = true;
+            foreach (var resource in input_resources)
+            {
+                if (!GameManager.instance.HasResourceInWarehoues(resource))
+                {
+                    resources_available = false;
+                    break;
+                }
+            }
+            if (resources_available)
+            {
+                foreach (var resource in input_resources)
+                {
+                    GameManager.instance.ConsumeResource(resource);
+                }
+                production_active = true;
+            }
         }
     }
 
@@ -37,7 +74,6 @@ public class ProductionBuilding : Building
 
     protected override void calc_efficiency()
     {
-        Debug.Log(base_efficiency.ToString() + " * (" + happiness_efficiency() + " + " + _workers.Count.ToString() + " / " + worker_capacity.ToString() + ") / 2");
-        efficiency = base_efficiency * (happiness_efficiency() + _workers.Count / worker_capacity) / 2.0f;
+       efficiency = base_efficiency * (happiness_efficiency() + _workers.Count / (float)worker_capacity) / 2.0f;
     }
 }
