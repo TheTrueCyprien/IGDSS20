@@ -331,10 +331,6 @@ public class GameManager : MonoBehaviour
                 {
                     HousingBuilding house = building_script as HousingBuilding;
                     //TODO
-                    if (building_script.cycle_time() > 0 && house.can_spawn()){
-                        Worker worker = new Worker();
-                        building_script.WorkerAssignedToBuilding(worker);
-                    }
                 }
             }
             else

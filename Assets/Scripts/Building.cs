@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Building : MonoBehaviour
@@ -15,8 +16,9 @@ public abstract class Building : MonoBehaviour
     public int generation_interval;
     public int output_count;
     public List<Tile.TileTypes> buildable_on;
+    public int worker_capacity;
 
-    public float efficiency = 1.0f;
+    protected float efficiency = 1.0f;
 
     protected abstract void calc_efficiency();
 
