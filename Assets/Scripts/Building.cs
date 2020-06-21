@@ -18,9 +18,16 @@ public abstract class Building : MonoBehaviour
 
     public float efficiency = 1.0f;
 
+    protected abstract void calc_efficiency();
+
     public float cycle_time()
     {
         return efficiency > 0.0f ? generation_interval / efficiency : -1.0f;
+    }
+
+    protected float happiness_efficiency()
+    {
+        return 1.0f; // TODO paul
     }
     
     #region Workers

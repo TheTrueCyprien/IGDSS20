@@ -66,8 +66,25 @@ public class JobManager : MonoBehaviour
 
     public void RemoveWorker(Worker w)
     {
-        _unoccupiedWorkers.Remove(w);
+        if (w._employed) 
+        {
+            // free job 
+            foreach (var job in _occupiedJobs)
+            {
+                if (job._worker == w)
+                {
+                    job.RemoveWorker(w);
+                    w._employed = false;
+                    _occupiedJobs.Remove(job);
+                    _availableJobs.Add(job);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            _unoccupiedWorkers.Remove(w);
+        }
     }
-
     #endregion
 }
