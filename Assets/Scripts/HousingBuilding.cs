@@ -15,13 +15,15 @@ public class HousingBuilding : Building
     #endregion
 
     #region Methods
+    public GameObject worker_prefab;
     protected override void calc_efficiency() {
         efficiency = happiness_efficiency();
     }
 
     public void spawn_worker() {
         if (_workers.Count < worker_capacity) {
-            Worker w = new Worker();
+            GameObject worker_obj = Instantiate(worker_prefab, transform.position, transform.rotation);
+            Worker w = worker_obj.GetComponent<Worker>();
             WorkerAssignedToBuilding(w);
             JobManager.instance.RegisterWorker(w);
         }

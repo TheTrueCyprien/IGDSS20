@@ -327,11 +327,6 @@ public class GameManager : MonoBehaviour
                     if (building_script.cycle_time() > 0)
                         StartCoroutine(production_cycle(prod));
                 }
-                else if (building_prefab.tag == "residence")
-                {
-                    HousingBuilding house = building_script as HousingBuilding;
-                    //TODO
-                }
             }
             else
             {
