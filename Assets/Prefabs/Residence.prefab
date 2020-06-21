@@ -74,8 +74,8 @@ MonoBehaviour:
   cost_planks: 0
   generation_interval: 30
   output_count: 1
-  buildable_on: 
-  efficiency: 1
+  buildable_on: 02000000030000000400000005000000
+  worker_capacity: 10
   _workers: []
 --- !u!1001 &163693841553759839
 PrefabInstance:

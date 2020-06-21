@@ -557,6 +557,7 @@ MonoBehaviour:
   - {fileID: 6529985461841638752, guid: 64ec3d61851b2f040b68ac5b4297d77d, type: 3}
   - {fileID: 3720502709659963063, guid: af5dbdaf80a99f34582b4474448641ca, type: 3}
   - {fileID: 9060381197637849279, guid: 5bae6d643ead3644daaede28a4ef2742, type: 3}
+  - {fileID: 3298097494976320251, guid: 5a5f60a00b47fd9489d69dc967002807, type: 3}
   _selectedBuildingPrefabIndex: 0
   _money: 0
   _ResourcesInWarehouse_Fish: 0

@@ -1964,7 +1964,7 @@ MonoBehaviour:
   generation_interval: 30
   output_count: 1
   buildable_on: 03000000
-  efficiency: 1
+  worker_capacity: 20
   _workers: []
   scales_with: 3
   neighbour_range: {x: 1, y: 4}

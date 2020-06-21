@@ -163,6 +163,7 @@ public class GameManager : MonoBehaviour
         _buildingInstances.Add(Building.BuildingType.SchnappsDistillery, 0);
         _buildingInstances.Add(Building.BuildingType.SheepFarm, 0);
         _buildingInstances.Add(Building.BuildingType.Weavery, 0);
+        _buildingInstances.Add(Building.BuildingType.Residence, 0);
     }
 
     //Sets the index for the currently selected building prefab by checking key presses on the numbers 1 to 0

@@ -8,13 +8,12 @@ public class ProductionBuilding : Building
     public Vector2Int neighbour_range;
     public List<GameManager.ResourceTypes> input_resources;
     public GameManager.ResourceTypes output_resources;
-    public int jobs_available;
     private float base_efficiency = 1.0f;
 
     void Start()
     {
         // generate jobs
-        for (int j = 0; j < jobs_available; j++)
+        for (int j = 0; j < worker_capacity; j++)
         {
             Job new_job = new Job(this);
             JobManager.instance.RegisterJob(new_job);
@@ -38,6 +37,6 @@ public class ProductionBuilding : Building
 
     protected override void calc_efficiency()
     {
-        efficiency = (base_efficiency * happiness_efficiency() * _workers.Count) / (3 * jobs_available);
+        efficiency = (base_efficiency * happiness_efficiency() * _workers.Count) / (3 * worker_capacity);
     }
 }
