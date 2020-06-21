@@ -12,6 +12,7 @@ public class HousingBuilding : Building
         foreach (Worker w in _workers)
         {
             w._age = 14;
+            w.BecomeOfAge();
         }
     }
     #endregion
