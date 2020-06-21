@@ -17,6 +17,7 @@ public class Worker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.instance.increment_population();
     }
 
     // Update is called once per frame
@@ -84,6 +85,7 @@ public class Worker : MonoBehaviour
 
     private void Die()
     {
+        GameManager.instance.decrement_population();
         Destroy(this.gameObject, 1f);
     }
 }

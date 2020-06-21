@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
 
 
     #region Resources
+    private int population_count;
     private Dictionary<ResourceTypes, float> _resourcesInWarehouse = new Dictionary<ResourceTypes, float>(); //Holds a number of stored resources for every ResourceType
 
     //A representation of _resourcesInWarehouse, broken into individual floats. Only for display in inspector, will be removed and replaced with UI later
@@ -224,8 +225,8 @@ public class GameManager : MonoBehaviour
     //Updates the resource upkeep of all buildings 
     void UpdateEconomyTick()
     {
-        //constant income
-        _money += 100;
+        //income
+        _money += 100 * population_count;
 
         //upkeep cost
         foreach (var building_prefab in _buildingPrefabs)
@@ -234,6 +235,16 @@ public class GameManager : MonoBehaviour
             int upkeep = building_prefab.GetComponent<Building>().upkeep;
             _money -= _buildingInstances[type] * upkeep;
         }
+    }
+
+    public void increment_population()
+    {
+        population_count++;
+    }
+
+    public void decrement_population()
+    {
+        population_count--;
     }
 
     //Production cycle for building
