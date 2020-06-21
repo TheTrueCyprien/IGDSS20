@@ -11,6 +11,7 @@ public class HousingBuilding : Building
         InvokeRepeating("spawn_worker", 0.0f, cycle_time());
         foreach (Worker w in _workers)
         {
+            Debug.Log("set age of spawned worker");
             w._age = 14;
             w.BecomeOfAge();
         }
@@ -28,6 +29,9 @@ public class HousingBuilding : Building
             GameObject worker_obj = Instantiate(worker_prefab, transform.position, transform.rotation);
             Worker w = worker_obj.GetComponent<Worker>();
             WorkerAssignedToBuilding(w);
+        }
+        else {
+            Debug.Log("No more workers created, capacity full!");
         }
     }
     #endregion

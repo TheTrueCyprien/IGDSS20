@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Worker : MonoBehaviour
@@ -12,7 +13,7 @@ public class Worker : MonoBehaviour
     public List<GameManager.ResourceTypes> consumables = new List<GameManager.ResourceTypes> { GameManager.ResourceTypes.Fish, GameManager.ResourceTypes.Clothes, GameManager.ResourceTypes.Schnapps };
 
     private float _age_clock = 0.0f; // Counter to track 15sec intervals
-    private Dictionary<GameManager.ResourceTypes, float> _consumption_clock; // Counter to track consumption intervals
+    private Dictionary<GameManager.ResourceTypes, float> _consumption_clock = new Dictionary<GameManager.ResourceTypes, float>(); // Counter to track consumption intervals
 
     // Start is called before the first frame update
     void Start()
@@ -34,17 +35,16 @@ public class Worker : MonoBehaviour
 
     private void Consume()
     {
-        int resources_consumed = 0;
         foreach (var resource in consumables)
         {
             _consumption_clock[resource] += Time.deltaTime;
             if (_consumption_clock[resource] >= consumption_period && 
                 GameManager.instance.ConsumeResource(resource)) {
-                resources_consumed += 1;
                 _consumption_clock[resource] %= consumption_period;
             }
         }
-        _happiness = (resources_consumed + (_employed ? 1 : 0)) / (consumables.Count+1);
+        int resources_consumed = _consumption_clock.Where(x => x.Value < consumption_period).Count();
+        _happiness = (resources_consumed + (_employed ? 1 : 0)) / (consumables.Count+1.0f);
     }
 
     private void Age()
