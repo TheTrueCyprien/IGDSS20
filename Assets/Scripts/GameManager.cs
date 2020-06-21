@@ -223,7 +223,7 @@ public class GameManager : MonoBehaviour
     }
 
     //Production cycle for building
-    private IEnumerator production_cycle(Building building)
+    private IEnumerator production_cycle(ProductionBuilding building)
     {
         while (true)
         {
@@ -258,6 +258,16 @@ public class GameManager : MonoBehaviour
         return _resourcesInWarehouse[resource] >= 1;
     }
 
+    public bool ConsumeResource(ResourceTypes resource)
+    {
+        if (_resourcesInWarehouse[resource] > 0)
+        {
+            _resourcesInWarehouse[resource] -= 1;
+            return true;
+        }
+        return false;
+    }
+
     //Is called by MouseManager when a tile was clicked
     //Forwards the tile to the method for spawning buildings
     public void TileClicked(int height, int width)
@@ -274,7 +284,7 @@ public class GameManager : MonoBehaviour
         if (_selectedBuildingPrefabIndex < _buildingPrefabs.Length)
         {
             GameObject building_prefab = _buildingPrefabs[_selectedBuildingPrefabIndex];
-            Building building_script = building_prefab.GetComponent<Building>();
+            ProductionBuilding building_script = building_prefab.GetComponent<ProductionBuilding>(); //FIXME HousingBuilding 
 
             Debug.Log("Trying to place: " + building_script.type);
 

@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Building : MonoBehaviour
+public abstract class Building : MonoBehaviour
 {
     public enum BuildingType
     {
         Fishery, Lumberjack, Sawmill, SheepFarm, Weavery, PotatoFarm, SchnappsDistillery
     }
-
     public BuildingType type;
     public int upkeep;
     public int cost_money;
@@ -16,10 +15,6 @@ public class Building : MonoBehaviour
     public int generation_interval;
     public int output_count;
     public List<Tile.TileTypes> buildable_on;
-    public Tile.TileTypes scales_with;
-    public Vector2Int neighbour_range;
-    public List<GameManager.ResourceTypes> input_resources;
-    public GameManager.ResourceTypes output_resources;
 
     public float efficiency = 1.0f;
 
@@ -28,19 +23,28 @@ public class Building : MonoBehaviour
         return efficiency > 0.0f ? generation_interval / efficiency : -1.0f;
     }
 
-    public void init_efficiency(List<Tile> neighbours)
-    {
-        if (scales_with != Tile.TileTypes.Empty) 
-        {
-            int scale_count = 0;
-            foreach (var neighbour in neighbours)
-            {
-                if (neighbour._type == scales_with)
-                    scale_count += 1;
-            }
-            efficiency = Mathf.Min(Mathf.Max(0.0f, (scale_count - neighbour_range.x + 1.0f) / (neighbour_range.y - neighbour_range.x + 1.0f)), 1.0f);
-        }
+    #region Manager References
+    JobManager _jobManager; //Reference to the JobManager
+    #endregion
+    
+    #region Workers
+    public List<Worker> _workers; //List of all workers associated with this building, either for work or living
+    #endregion
 
+    #region Jobs
+    public List<Job> _jobs; // List of all available Jobs. Is populated in Start()
+    #endregion
+    
+
+    #region Methods   
+    public void WorkerAssignedToBuilding(Worker w)
+    {
+        _workers.Add(w);
     }
 
+    public void WorkerRemovedFromBuilding(Worker w)
+    {
+        _workers.Remove(w);
+    }
+    #endregion
 }
