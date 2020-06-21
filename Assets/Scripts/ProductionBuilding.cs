@@ -9,6 +9,7 @@ public class ProductionBuilding : Building
     public List<GameManager.ResourceTypes> input_resources;
     public GameManager.ResourceTypes output_resources;
     public int jobs_available;
+    private float base_efficiency = 1.0f;
 
     void Start()
     {
@@ -30,9 +31,13 @@ public class ProductionBuilding : Building
                 if (neighbour._type == scales_with)
                     scale_count += 1;
             }
-            efficiency = Mathf.Min(Mathf.Max(0.0f, (scale_count - neighbour_range.x + 1.0f) / (neighbour_range.y - neighbour_range.x + 1.0f)), 1.0f);
+            base_efficiency = Mathf.Min(Mathf.Max(0.0f, (scale_count - neighbour_range.x + 1.0f) / (neighbour_range.y - neighbour_range.x + 1.0f)), 1.0f);
         }
 
     }
 
+    protected override void calc_efficiency()
+    {
+        efficiency = (base_efficiency * happiness_efficiency() * _workers.Count) / (3 * jobs_available);
+    }
 }

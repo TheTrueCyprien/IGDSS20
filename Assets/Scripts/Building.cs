@@ -22,6 +22,7 @@ public abstract class Building : MonoBehaviour
 
     public float cycle_time()
     {
+        calc_efficiency();
         return efficiency > 0.0f ? generation_interval / efficiency : -1.0f;
     }
 
