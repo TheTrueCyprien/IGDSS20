@@ -19,14 +19,7 @@ public abstract class Building : MonoBehaviour
     public int worker_capacity;
 
     protected float efficiency = 1.0f;
-
-    protected abstract void calc_efficiency();
-
-    public float cycle_time()
-    {
-        calc_efficiency();
-        return efficiency > 0.0f ? generation_interval / efficiency : -1.0f;
-    }
+    protected float progress = 0.0f;
 
     protected float happiness_efficiency()
     {

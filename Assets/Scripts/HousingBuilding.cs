@@ -7,8 +7,10 @@ public class HousingBuilding : Building
     #region MonoBehavior
     public void Start() {
         //spawn two workers
-        spawn_worker();
-        InvokeRepeating("spawn_worker", 0.0f, cycle_time());
+        for (int i = 0; i < 2; i++)
+        {
+            spawn_worker();
+        }
         foreach (Worker w in _workers)
         {
             Debug.Log("set age of spawned worker");
@@ -16,13 +18,21 @@ public class HousingBuilding : Building
             w.BecomeOfAge();
         }
     }
+
+    private void Update()
+    {
+        if (progress >= generation_interval)
+        {
+            progress = 0.0f;
+            spawn_worker();
+        }
+        efficiency = happiness_efficiency();
+        progress += efficiency * Time.deltaTime;
+    }
     #endregion
 
     #region Methods
     public GameObject worker_prefab;
-    protected override void calc_efficiency() {
-        efficiency = happiness_efficiency();
-    }
 
     public void spawn_worker() {
         if (_workers.Count < worker_capacity) {

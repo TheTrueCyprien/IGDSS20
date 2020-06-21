@@ -10,7 +10,6 @@ public class ProductionBuilding : Building
     public GameManager.ResourceTypes output_resources;
     private float base_efficiency = 1.0f;
     private bool production_active = false;
-    private float progress = 0.0f;
 
     void Start()
     {
@@ -70,10 +69,5 @@ public class ProductionBuilding : Building
             base_efficiency = Mathf.Min(Mathf.Max(0.0f, (scale_count - neighbour_range.x + 1.0f) / (neighbour_range.y - neighbour_range.x + 1.0f)), 1.0f);
         }
 
-    }
-
-    protected override void calc_efficiency()
-    {
-       efficiency = base_efficiency * (happiness_efficiency() + _workers.Count / (float)worker_capacity) / 2.0f;
     }
 }
