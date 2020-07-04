@@ -39,11 +39,13 @@ public abstract class Building : MonoBehaviour
     public void WorkerAssignedToBuilding(Worker w)
     {
         _workers.Add(w);
+        NavigationManager.instance.register_worker(this, w);
     }
 
     public void WorkerRemovedFromBuilding(Worker w)
     {
         _workers.Remove(w);
+        NavigationManager.instance.remove_worker(w);
     }
     #endregion
 }

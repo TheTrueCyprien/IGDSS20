@@ -308,11 +308,12 @@ public class GameManager : MonoBehaviour
                 
                 _buildingInstances[building_script.type] += 1;
                 tile._building = building_script;
-
                 if (building_prefab.tag == "production")
                 {
                     (building_script as ProductionBuilding).init_efficiency(tile._neighborTiles);
                 }
+                // init potential
+                NavigationManager.instance.init_map(tile);
             }
             else
             {
