@@ -112,6 +112,7 @@ public class Worker : MonoBehaviour
                 if (waiting_progress >= 5.0f)
                 {
                     _navigation_next_id = _navigation_targets.x == _navigation_next_id ? _navigation_targets.y : _navigation_targets.x;
+                    waiting_progress = 0.0f;
                 }
                 else
                 {
@@ -131,7 +132,11 @@ public class Worker : MonoBehaviour
         {
             _navigation_next_pos = get_next_step();
         }
-        transform.position = Vector3.Lerp(transform.position, _navigation_next_pos, Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, _navigation_next_pos, 5*Time.deltaTime);
+        Vector3 pos_delta = _navigation_next_pos - transform.position;
+        pos_delta.y = 0.0f;
+        if (pos_delta.magnitude > 0.0f)
+            transform.rotation = Quaternion.LookRotation(pos_delta, Vector3.up);
     }
 
     public void request_route()
