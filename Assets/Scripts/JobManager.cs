@@ -49,6 +49,7 @@ public class JobManager : MonoBehaviour
             job_listing.AssignWorker(applicant);
             _unoccupiedWorkers.Remove(applicant);
             applicant._employed = true;
+            applicant.request_route();
             _availableJobs.Remove(job_listing);
             _occupiedJobs.Add(job_listing);
         }

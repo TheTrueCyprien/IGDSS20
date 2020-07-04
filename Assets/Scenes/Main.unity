@@ -269,7 +269,7 @@ MonoBehaviour:
   movementTime: 5
   zoomAmount: 100
   rotateAmount: 10
-  limitZoom: {x: 50, y: 200}
+  limitZoom: {x: 20, y: 200}
 --- !u!4 &834136087
 Transform:
   m_ObjectHideFlags: 0

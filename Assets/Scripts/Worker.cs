@@ -14,13 +14,16 @@ public class Worker : MonoBehaviour
 
     private float _age_clock = 0.0f; // Counter to track 15sec intervals
     private Dictionary<GameManager.ResourceTypes, float> _consumption_clock = new Dictionary<GameManager.ResourceTypes, float>(); // Counter to track consumption intervals
-
+    private Vector2Int _navigation_targets = new Vector2Int();
+    private int _navigation_next_id = -1;
+    private Vector3 _navigation_next_pos = new Vector3();
+    private float waiting_progress = 0.0f;
+    
     // Start is called before the first frame update
     void Start()
     {
         GameManager.instance.increment_population();
 
-        _consumption_clock = new Dictionary<GameManager.ResourceTypes, float>();
         foreach (var resource in consumables)
         {
             _consumption_clock[resource] = 0.0f;
@@ -32,6 +35,9 @@ public class Worker : MonoBehaviour
     {
         Consume();
         Age();
+
+        if (_employed)
+            make_step();
     }
 
     private void Consume()
@@ -90,5 +96,48 @@ public class Worker : MonoBehaviour
     {
         GameManager.instance.decrement_population();
         Destroy(this.gameObject, 1f);
+    }
+
+    private Vector3 get_next_step()
+    {
+        LayerMask mask = LayerMask.GetMask("Tiles");
+        RaycastHit hit;
+        if (_navigation_next_id != -1 &&
+            Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, Mathf.Infinity, mask))
+        {
+            Tile current_tile = hit.collider.GetComponent<Tile>();
+            if (current_tile.potentials[_navigation_next_id] == 0.0f)
+            {
+                waiting_progress += Time.deltaTime;
+                if (waiting_progress >= 5.0f)
+                {
+                    _navigation_next_id = _navigation_targets.x == _navigation_next_id ? _navigation_targets.y : _navigation_targets.x;
+                }
+                else
+                {
+                    return transform.position;
+                }
+            }
+
+            Tile target_tile = current_tile._neighborTiles.Aggregate((t1, t2) => t1.potentials[_navigation_next_id] < t2.potentials[_navigation_next_id] ? t1 : t2);
+            return target_tile.transform.position;
+        }
+        return transform.position;
+    }
+
+    private void make_step()
+    {
+        if (Vector3.Distance(transform.position, _navigation_next_pos) < 0.1f) 
+        {
+            _navigation_next_pos = get_next_step();
+        }
+        transform.position = Vector3.Lerp(transform.position, _navigation_next_pos, Time.deltaTime);
+    }
+
+    public void request_route()
+    {
+        _navigation_targets = NavigationManager.instance.request_route(this);
+        _navigation_next_id = _navigation_targets.y;
+        _navigation_next_pos = get_next_step();
     }
 }
