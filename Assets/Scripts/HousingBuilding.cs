@@ -24,6 +24,7 @@ public class HousingBuilding : Building
         if (progress >= generation_interval)
         {
             progress = 0.0f;
+            _workers.RemoveAll(worker => worker == null);
             spawn_worker();
         }
         efficiency = happiness_efficiency();
