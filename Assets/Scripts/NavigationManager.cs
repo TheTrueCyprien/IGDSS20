@@ -59,10 +59,11 @@ public class NavigationManager : MonoBehaviour
                             neighbour.potentials.Add(tile.potentials[id] + 3);
                             break;
                     }
-                    tiles_with_potential.Add(neighbour);
+                    int insert_index = tiles_with_potential.BinarySearch(neighbour, new ComparePotential(id));
+                    insert_index = insert_index < 0 ? ~insert_index : insert_index;
+                    tiles_with_potential.Insert(insert_index, neighbour);
                 }
             }
-            tiles_with_potential.Sort(new ComparePotential(id));
             i++;
         }
     }
@@ -78,7 +79,6 @@ public class NavigationManager : MonoBehaviour
         else
         {
             route = new Vector2Int();
-            worker_route[w] = route;
         }
         // assign id
         if (b is HousingBuilding)
@@ -89,6 +89,7 @@ public class NavigationManager : MonoBehaviour
         {
             route.y = map_id[b];
         }
+        worker_route[w] = route;
     }
 
     public void remove_worker(Worker w)
